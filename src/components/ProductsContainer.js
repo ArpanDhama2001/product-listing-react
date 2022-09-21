@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ProductsState } from "../context/productsContext";
 import { getAllProducts } from "../config/apiConfig";
 import ProductComponent from "./ProductComponent";
+import Header from "./Header";
 
 function ProductsContainer() {
   const { products, setProducts } = ProductsState();
@@ -37,11 +38,14 @@ function ProductsContainer() {
   // console.log("products:", products);
 
   return (
-    <main className="flex flex-col gap-4">
-      {products.map((product) => {
-        return <ProductComponent key={product.id} product={product} />;
-      })}
-    </main>
+    <>
+      <Header />
+      <main className="flex flex-col gap-4">
+        {products.map((product) => {
+          return <ProductComponent key={product.id} product={product} />;
+        })}
+      </main>
+    </>
   );
 }
 

@@ -34,9 +34,9 @@ const ProductComponent = ({ product }) => {
           <input
             type="text"
             name="quantity"
-            value={qty}
+            value={`${qty ? qty : 0}`}
             onChange={(e) => setQty(e.target.value)}
-            className="w-[50px] text-center bg-gray-200 rounded-sm"
+            className="w-[50px] text-center bg-gray-200 rounded-sm py-1 px-2"
           />
           <span className="flex items-center">
             <FaShoppingCart />
