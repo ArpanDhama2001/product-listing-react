@@ -1,14 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import CartPage from "./pages/CartPage";
 import Home from "./pages/Home";
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="/cart" element={<CartPage />} />
+      </Routes>
     </div>
   );
 }

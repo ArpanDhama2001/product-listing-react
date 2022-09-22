@@ -1,47 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { ProductsState } from "../context/productsContext";
-import { getAllProducts } from "../config/apiConfig";
+import React, { useEffect } from "react";
 import ProductComponent from "./ProductComponent";
 import Header from "./Header";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts, STATUS } from "../features/productsSlice";
 
 function ProductsContainer() {
-  const { products, setProducts } = ProductsState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(getAllProducts());
-      const { products } = await res.json();
-      setProducts(products);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  };
+  const { data, status } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(fetchProducts());
   }, []);
 
-  if (loading) {
+  if (status === STATUS.loading) {
     return <h1>Loading...</h1>;
   }
 
-  if (error) {
+  if (status === STATUS.error) {
     return <h1>Oops! Something went wrong.</h1>;
   }
-
-  // console.log("products:", products);
 
   return (
     <>
       <Header />
       <main className="flex flex-col gap-4">
-        {products.map((product) => {
+        {data?.map((product) => {
           return <ProductComponent key={product.id} product={product} />;
         })}
       </main>

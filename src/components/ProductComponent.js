@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCheck, removeFromCheck } from "../features/checkedSlice";
 
 const ProductComponent = ({ product }) => {
-  const [checked, setChecked] = useState();
+  const dispatch = useDispatch();
+
+  const [checked, setChecked] = useState(false);
   const [qty, setQty] = useState(1);
+
+  const addCheck = () => {
+    checked
+      ? dispatch(addToCheck(product))
+      : dispatch(removeFromCheck(product.id));
+  };
+
+  useEffect(() => {
+    addCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checked]);
 
   return (
     <main>
@@ -35,7 +50,9 @@ const ProductComponent = ({ product }) => {
             type="text"
             name="quantity"
             value={`${qty ? qty : 0}`}
-            onChange={(e) => setQty(e.target.value)}
+            onChange={(e) => {
+              setQty(e.target.value);
+            }}
             className="w-[50px] text-center bg-gray-200 rounded-sm py-1 px-2"
           />
           <span className="flex items-center">
@@ -44,7 +61,7 @@ const ProductComponent = ({ product }) => {
           <input
             type="checkbox"
             checked={checked}
-            onClick={() => {
+            onChange={() => {
               setChecked(!checked);
             }}
           />
