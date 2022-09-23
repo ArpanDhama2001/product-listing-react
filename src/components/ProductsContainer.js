@@ -6,7 +6,31 @@ import { fetchProducts, STATUS } from "../features/productsSlice";
 
 function ProductsContainer() {
   const { data, status } = useSelector((state) => state.products);
+  const { category, stock, searchQuery } = useSelector((state) => state.filter);
+
   const dispatch = useDispatch();
+
+  const filterProducts = () => {
+    let products = data;
+
+    if (category !== "-- Categories --" && category) {
+      products = products.filter((product) => product.category === category);
+    }
+
+    if (stock === "In Stock") {
+      products = products.filter((ele) => ele.stock > 0);
+    } else if (stock === "Out of Stock") {
+      products = products.filter((ele) => ele.stock < 1);
+    }
+
+    if (searchQuery) {
+      products = products.filter((ele) =>
+        ele.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return products;
+  };
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -24,7 +48,7 @@ function ProductsContainer() {
     <>
       <Header />
       <main className="flex flex-col gap-4">
-        {data?.map((product) => {
+        {filterProducts()?.map((product) => {
           return <ProductComponent key={product.id} product={product} />;
         })}
       </main>

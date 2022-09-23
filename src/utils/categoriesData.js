@@ -1,4 +1,5 @@
 export const categories = [
+  "-- Categories --",
   "smartphones",
   "laptops",
   "fragrances",

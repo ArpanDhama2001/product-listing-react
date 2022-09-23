@@ -18,7 +18,7 @@ const CartSummary = () => {
   }, [cart]);
 
   return (
-    <div className="w-[300px] flex flex-col gap-6 border-2 border-gray-200 p-6">
+    <div className="w-[300px] flex flex-col gap-6 border-2 border-gray-200 p-6 rounded-md">
       <h1 className="text-2xl -mt-2">Cart totals</h1>
       <table>
         <thead className="border-b-2 border-gray-200 text-left">
