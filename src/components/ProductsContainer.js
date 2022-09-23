@@ -34,6 +34,7 @@ function ProductsContainer() {
 
   useEffect(() => {
     dispatch(fetchProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === STATUS.loading) {
