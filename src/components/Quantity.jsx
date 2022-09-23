@@ -7,6 +7,7 @@ const Quantity = ({ qty, setQty, id }) => {
   const { value: cart } = useSelector((state) => state.cart);
 
   const getQty = (id) => {
+    // eslint-disable-next-line array-callback-return
     cart.map((ele) => {
       if (ele.id === id) {
         setQty(ele.qty);

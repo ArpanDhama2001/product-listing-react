@@ -1,6 +1,6 @@
 import ProductsContainer from "../components/ProductsContainer";
 
-function Home() {
+const Home = () => {
   return (
     <main>
       <section id="product-table">
@@ -8,6 +8,6 @@ function Home() {
       </section>
     </main>
   );
-}
+};
 
 export default Home;

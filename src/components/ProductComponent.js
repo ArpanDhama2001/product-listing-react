@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCheck, removeFromCheck } from "../features/checkedSlice";
+import {
+  addToCheck,
+  removeFromCheck,
+  updateQty,
+} from "../features/checkedSlice";
+import { setCategory } from "../features/filterSlice";
 
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
@@ -10,9 +14,11 @@ const ProductComponent = ({ product }) => {
   const [checked, setChecked] = useState(false);
   const [qty, setQty] = useState(1);
 
+  console.log();
+
   const addCheck = () => {
     checked
-      ? dispatch(addToCheck(product))
+      ? dispatch(addToCheck({ product: product, qty: Number(qty) }))
       : dispatch(removeFromCheck(product.id));
   };
 
@@ -20,6 +26,11 @@ const ProductComponent = ({ product }) => {
     addCheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checked]);
+
+  useEffect(() => {
+    dispatch(updateQty({ id: product.id, qty: qty }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qty]);
 
   return (
     <main>
@@ -32,11 +43,12 @@ const ProductComponent = ({ product }) => {
           />
         </div>
         <p className="w-[250px]">{product.title}</p>
-        <Link to={`/category/${product.category}`}>
-          <button className="w-[80px] text-cyan-500 underline">
-            {product.category}
-          </button>
-        </Link>
+        <button
+          onClick={() => dispatch(setCategory(product.category))}
+          className="w-[80px] text-cyan-500 underline"
+        >
+          {product.category}
+        </button>
         <p
           className={`w-[100px] ${
             product.stock ? "text-green-600" : "text-red-600"
