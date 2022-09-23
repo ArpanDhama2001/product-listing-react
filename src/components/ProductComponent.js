@@ -14,8 +14,6 @@ const ProductComponent = ({ product }) => {
   const [checked, setChecked] = useState(false);
   const [qty, setQty] = useState(1);
 
-  console.log();
-
   const addCheck = () => {
     checked
       ? dispatch(addToCheck({ product: product, qty: Number(qty) }))
