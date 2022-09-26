@@ -1,34 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import {
-  addToCheck,
-  removeFromCheck,
-  updateQty,
-} from "../features/checkedSlice";
 import { setCategory } from "../features/filterSlice";
+import { toggleCheck, updateQty } from "../features/productsSlice";
 
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
-
-  const [checked, setChecked] = useState(false);
-  const [qty, setQty] = useState(1);
-
-  const addCheck = () => {
-    checked
-      ? dispatch(addToCheck({ product: product, qty: Number(qty) }))
-      : dispatch(removeFromCheck(product.id));
-  };
-
-  useEffect(() => {
-    addCheck();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checked]);
-
-  useEffect(() => {
-    dispatch(updateQty({ id: product.id, qty: qty }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qty]);
 
   return (
     <main>
@@ -59,9 +36,11 @@ const ProductComponent = ({ product }) => {
           <input
             type="text"
             name="quantity"
-            value={`${qty ? qty : 0}`}
+            value={product.qty}
             onChange={(e) => {
-              setQty(e.target.value);
+              dispatch(
+                updateQty({ id: product.id, qty: Number(e.target.value) })
+              );
             }}
             className="w-[50px] text-center bg-gray-200 rounded-sm py-1 px-2"
           />
@@ -70,9 +49,9 @@ const ProductComponent = ({ product }) => {
           </span>
           <input
             type="checkbox"
-            checked={checked}
+            checked={product.checked}
             onChange={() => {
-              setChecked(!checked);
+              dispatch(toggleCheck(product.id));
             }}
           />
         </div>

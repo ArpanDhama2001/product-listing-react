@@ -9,13 +9,13 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      state.value = action.payload;
+      state.value = [];
+      action.payload.forEach((ele) => {
+        if (ele.checked) state.value.push(ele);
+      });
     },
     remove: (state, action) => {
       state.value = state.value.filter((item) => item.id !== action.payload);
-    },
-    clearCart: (state) => {
-      state.value = [];
     },
     changeQty: (state, action) => {
       // eslint-disable-next-line array-callback-return
@@ -32,6 +32,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, remove, changeQty, clearCart } = cartSlice.actions;
+export const { addToCart, remove, changeQty } = cartSlice.actions;
 
 export default cartSlice.reducer;

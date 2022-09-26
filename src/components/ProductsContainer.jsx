@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import ProductComponent from "./ProductComponent";
 import Header from "./Header";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, STATUS } from "../features/productsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { compareToCart, STATUS } from "../features/productsSlice";
 
 function ProductsContainer() {
+  const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.products);
+  const { value: cart } = useSelector((state) => state.cart);
   const { category, stock, searchQuery } = useSelector((state) => state.filter);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(compareToCart(cart));
+  }, [cart, dispatch]);
 
   const filterProducts = () => {
     let products = data;
@@ -31,11 +35,6 @@ function ProductsContainer() {
 
     return products;
   };
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (status === STATUS.loading) {
     return <h1>Loading...</h1>;

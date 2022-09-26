@@ -22,6 +22,35 @@ export const productsSlice = createSlice({
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    toggleCheck: (state, action) => {
+      state.data.forEach((ele) => {
+        if (ele.id === action.payload) {
+          ele.checked = !ele.checked;
+        }
+      });
+    },
+    updateQty: (state, action) => {
+      state.data.forEach((item) => {
+        if (item.id === action.payload.id) {
+          item.qty = action.payload.qty;
+        }
+      });
+    },
+    compareToCart: (state, action) => {
+      state.data.forEach((ele) => {
+        let present = false;
+        action.payload.forEach((cart) => {
+          if (ele.id === cart.id) {
+            present = true;
+            ele.qty = cart.qty;
+          }
+        });
+        if (!present) {
+          ele.qty = 1;
+          ele.checked = false;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -30,6 +59,16 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.data = action.payload;
+        let temp = [];
+        state.data.forEach((ele) => {
+          ele = {
+            ...ele,
+            checked: false,
+            qty: 1,
+          };
+          temp.push(ele);
+        });
+        state.data = temp;
         state.status = STATUS.idle;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -38,7 +77,8 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { setProducts, setStatus, setNewProps } = productsSlice.actions;
+export const { setProducts, setStatus, toggleCheck, updateQty, compareToCart } =
+  productsSlice.actions;
 export default productsSlice.reducer;
 
 // THUNKS

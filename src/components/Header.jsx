@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 import { categories } from "../utils/categoriesData";
 import SelectFilter from "./SelectFilter";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, clearCart } from "../features/cartSlice";
+import { addToCart } from "../features/cartSlice";
 import { clearFilter, setSearchQuery } from "../features/filterSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { value: selectedItems } = useSelector((state) => state.checked);
+  const { data: products } = useSelector((state) => state.products);
   const { searchQuery } = useSelector((state) => state.filter);
 
   const handleClick = () => {
-    dispatch(clearCart());
-    dispatch(addToCart(selectedItems));
+    dispatch(addToCart(products));
   };
 
   return (
